@@ -24,9 +24,15 @@
 }
 
 * { box-sizing: border-box; }
-html, body { height: 100%; }
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
 body {
+  /* iPhoneのアドレスバー伸縮対策 */
+  height: 100svh;
+  overflow: hidden; /* ✅ スクロール禁止 */
   margin: 0;
   color: var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
@@ -34,16 +40,18 @@ body {
 }
 
 #app {
-  min-height: 100dvh;
+  height: 100svh;
+  overflow: hidden;
 }
 
 /* ============ Screens ============ */
 .screen {
   position: relative;
-  min-height: 100dvh;
   display: none;
   flex-direction: column;
   overflow: hidden;
+  height: 100svh;     /* ✅ min-height ではなく height */
+  min-height: 0;   
 }
 .screen.is-active {
   display: flex;
@@ -54,12 +62,28 @@ body {
   inset: 0;
   background-size: cover;
   background-position: center;
-  transform: scale(1.02);
+  background-repeat: no-repeat; /* ★これが必須 */
+  transform: none; 
 }
 .screen__veil {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, var(--veil-1), var(--veil-2));
+}
+
+@media (max-width: 480px) {
+  .screen__bg {
+    transform: scale(0.92);
+    transform-origin: center;
+  }
+
+  /* 下ボタンが切れやすいので安全領域も加味 */
+  .footer-actions {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .hud {
+    padding-top: calc(10px + env(safe-area-inset-top));
+  }
 }
 
 /* ============ Card ============ */
@@ -314,16 +338,19 @@ body {
   place-items: end center;
   pointer-events: auto;
 }
-
-
-
 .kappa__img {
   width: auto;
   height: 70%;
   object-fit: contain;
   filter: drop-shadow(0 18px 28px rgba(0,0,0,0.55));
-  transform: translateY(6px);
+  transform: translateY(-106px);
   transition: opacity 220ms ease;
+}
+@media (max-width: 780px){
+.kappa__img {
+  width: auto;
+  height: 60%;
+}
 }
 .kappa__img.is-fade-out {
   opacity: 0;
@@ -331,12 +358,12 @@ body {
 
 /* ✅ シェイク（怒り）：クラス名を is-shake に統一 */
 @keyframes kappaShake {
-  0%   { transform: translateY(6px) translateX(0) rotate(0deg); }
-  20%  { transform: translateY(6px) translateX(-6px) rotate(-2deg); }
-  40%  { transform: translateY(6px) translateX(6px) rotate(2deg); }
-  60%  { transform: translateY(6px) translateX(-5px) rotate(-1.5deg); }
-  80%  { transform: translateY(6px) translateX(5px) rotate(1.5deg); }
-  100% { transform: translateY(6px) translateX(0) rotate(0deg); }
+  0%   { transform: translateY(-106px) translateX(0) rotate(0deg); }
+  20%  { transform: translateY(-106px) translateX(-6px) rotate(-2deg); }
+  40%  { transform: translateY(-106px) translateX(6px) rotate(2deg); }
+  60%  { transform: translateY(-106px) translateX(-5px) rotate(-1.5deg); }
+  80%  { transform: translateY(-106px) translateX(5px) rotate(1.5deg); }
+  100% { transform: translateY(-106px) translateX(0) rotate(0deg); }
 }
 .kappa__img.is-shake {
   animation: kappaShake 280ms ease-in-out 2;
