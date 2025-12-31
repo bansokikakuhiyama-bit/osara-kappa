@@ -343,7 +343,7 @@ body {
   height: 70%;
   object-fit: contain;
   filter: drop-shadow(0 18px 28px rgba(0,0,0,0.55));
-  transform: translateY(-106px);
+  transform: translateY(-156px);
   transition: opacity 220ms ease;
 }
 @media (max-width: 780px){
@@ -358,12 +358,12 @@ body {
 
 /* ✅ シェイク（怒り）：クラス名を is-shake に統一 */
 @keyframes kappaShake {
-  0%   { transform: translateY(-106px) translateX(0) rotate(0deg); }
-  20%  { transform: translateY(-106px) translateX(-6px) rotate(-2deg); }
-  40%  { transform: translateY(-106px) translateX(6px) rotate(2deg); }
-  60%  { transform: translateY(-106px) translateX(-5px) rotate(-1.5deg); }
-  80%  { transform: translateY(-106px) translateX(5px) rotate(1.5deg); }
-  100% { transform: translateY(-106px) translateX(0) rotate(0deg); }
+  0%   { transform: translateY(-156px) translateX(0) rotate(0deg); }
+  20%  { transform: translateY(-156px) translateX(-6px) rotate(-2deg); }
+  40%  { transform: translateY(-156px) translateX(6px) rotate(2deg); }
+  60%  { transform: translateY(-156px) translateX(-5px) rotate(-1.5deg); }
+  80%  { transform: translateY(-156px) translateX(5px) rotate(1.5deg); }
+  100% { transform: translateY(-156px) translateX(0) rotate(0deg); }
 }
 .kappa__img.is-shake {
   animation: kappaShake 280ms ease-in-out 2;
