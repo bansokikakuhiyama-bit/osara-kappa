@@ -1,0 +1,506 @@
+:root {
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.72);
+
+  --veil-1: rgba(0, 0, 0, 0.62);
+  --veil-2: rgba(0, 0, 0, 0.30);
+
+  --card: rgba(20, 20, 24, 0.58);
+  --card-border: rgba(255, 255, 255, 0.10);
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+
+  --btn: rgba(255, 255, 255, 0.12);
+  --btn-hover: rgba(255, 255, 255, 0.18);
+  --btn-primary: rgba(255, 255, 255, 0.22);
+  --btn-primary-hover: rgba(255, 255, 255, 0.30);
+
+  --danger: rgba(255, 90, 90, 0.92);
+  --warning: rgba(255, 170, 60, 0.92);
+
+  --bar-bg: rgba(255,255,255,0.10);
+  --bar-fill: rgba(255,255,255,0.34);
+  --bar-fill-warn: rgba(255, 170, 60, 0.70);
+  --bar-fill-danger: rgba(255, 90, 90, 0.82);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: #0b0b0f;
+}
+
+#app {
+  min-height: 100dvh;
+}
+
+/* ============ Screens ============ */
+.screen {
+  position: relative;
+  min-height: 100dvh;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.screen.is-active {
+  display: flex;
+}
+
+.screen__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+}
+.screen__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--veil-1), var(--veil-2));
+}
+
+/* ============ Card ============ */
+.card {
+  position: relative;
+  z-index: 2;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.card--center {
+  width: min(520px, calc(100vw - 32px));
+  padding: 22px 18px;
+}
+
+/* 釣り画面／釣果画面のカードをど真ん中に */
+#screen-fishing .card--center,
+#screen-catch .card--center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  margin: 0 0 10px;
+  font-size: 28px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+}
+
+.title--sm {
+  font-size: 20px;
+}
+
+.lead {
+  margin: 0 0 18px;
+  color: var(--muted);
+  line-height: 1.6;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.45);
+}
+
+.hint {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ============ Buttons ============ */
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.btn {
+  width: 100%;
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.384);
+  background: var(--btn);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 14px 14px;
+  font-size: 16px;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.25);
+  transition: transform 120ms ease, background 120ms ease, opacity 120ms ease;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+.btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
+.btn:active { transform: translateY(0px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+.btn--primary {
+  background: var(--btn-primary);
+  border-color: rgba(255,255,255,0.18);
+  font-weight: 800;
+}
+.btn--primary:hover { background: var(--btn-primary-hover); }
+
+.btn--ghost {
+  background: rgba(0,0,0,0.10);
+}
+
+/* ============ Catch result ============ */
+.caught {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  margin: 10px 0 14px;
+}
+
+.caught__img {
+  width: min(72vw, 260px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 28px rgba(0,0,0,0.55));
+}
+
+.caught__text {
+  margin: 0;
+  font-weight: 800;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+
+.caught__meta {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255,255,255,0.70);
+}
+
+/* ============ Room / HUD ============ */
+/* 狭くなっても2カラム維持 */
+.hud {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* ← 50% / 50% */
+  gap: 10px;
+  padding: 10px 12px 6px;
+  background: rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+
+/* 左側 */
+.hud__left {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+}
+
+/* 右側 */
+.hud__right {
+  display: grid;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: start;
+}
+
+/* 右上ボタン：2列維持、狭い時は折り返し（縦積み強制しない） */
+.hud__actions {
+  display: grid;
+  grid-template-columns: minmax(80px, 1fr) minmax(80px, 1fr);
+  gap: 8px;
+}
+
+/* ★右上ボタンの文字を「2まわり」小さく */
+.hud__actions .btn {
+  font-size: 12px;
+  padding: 10px 5px;
+  border-radius: 10px;
+}
+
+/* 左上ライン */
+.hud__line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hud__label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.70);
+}
+
+.hud__value {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.hud__sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.70);
+}
+
+/* Bars */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bar__label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.90);
+  min-width: 2.5em;
+}
+
+.bar__pct {
+  font-size: 12px;
+  min-width: 34px;
+  text-align: right;
+  color: rgba(255,255,255,0.85);
+}
+
+.bar__track {
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bar-bg);
+  border: 1px solid rgba(255,255,255,0.12);
+  overflow: hidden;
+}
+
+.bar__fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: var(--bar-fill);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  transition: width 200ms ease, background 200ms ease;
+}
+
+/* 個別カラー */
+#bar-water {
+  background: linear-gradient(90deg, #3cc9ff, #2166ff);
+}
+#bar-food {
+  background: linear-gradient(90deg, #ffcc60, #ff9933);
+}
+
+/* 20%以下で赤く */
+.bar__fill.bar--danger {
+  background: var(--bar-fill-danger);
+}
+.text--danger {
+  color: var(--danger) !important;
+}
+
+/* room main */
+.room {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: grid;
+  place-items: end center;
+  padding: 0 12px 12px;
+  overflow: hidden;
+}
+
+/* Kappa */
+.kappa {
+  width: 100%;
+  display: grid;
+  place-items: end center;
+  pointer-events: auto;
+}
+
+
+
+.kappa__img {
+  width: auto;
+  height: 70%;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 28px rgba(0,0,0,0.55));
+  transform: translateY(6px);
+  transition: opacity 220ms ease;
+}
+.kappa__img.is-fade-out {
+  opacity: 0;
+}
+
+/* ✅ シェイク（怒り）：クラス名を is-shake に統一 */
+@keyframes kappaShake {
+  0%   { transform: translateY(6px) translateX(0) rotate(0deg); }
+  20%  { transform: translateY(6px) translateX(-6px) rotate(-2deg); }
+  40%  { transform: translateY(6px) translateX(6px) rotate(2deg); }
+  60%  { transform: translateY(6px) translateX(-5px) rotate(-1.5deg); }
+  80%  { transform: translateY(6px) translateX(5px) rotate(1.5deg); }
+  100% { transform: translateY(6px) translateX(0) rotate(0deg); }
+}
+.kappa__img.is-shake {
+  animation: kappaShake 280ms ease-in-out 2;
+}
+
+/* Footer actions */
+.footer-actions {
+  position: relative;
+  z-index: 3;
+  padding: 8px 12px 12px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.footer-actions .btn {
+  max-width: 220px;
+}
+
+/* ============ Modal ============ */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+}
+.modal.is-hidden { display: none; }
+
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.modal__panel {
+  position: relative;
+  width: min(560px, calc(100vw - 20px));
+  max-height: calc(100dvh - 28px);
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(22, 22, 28, 0.88);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+.modal__title {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+.icon-btn:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+
+.modal__body {
+  padding: 14px;
+  overflow: auto;
+}
+
+.modal__footer {
+  padding: 12px 14px 14px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.shop-section {
+  padding: 12px 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.16);
+  margin-bottom: 12px;
+}
+
+.shop-section__title {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.shop-section__desc {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.68);
+  line-height: 1.5;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ✅ 「コインを購入」ボタン周りだけ余白を作る（全体に margin-top をばら撒かない） */
+#modal-shop .shop-section #btn-buy-coins {
+  margin-top: 12px;
+}
+
+/* ✅ 区切り（そのまま使う） */
+.shop-section__divider {
+  height: 12px;
+}
+
+/* ごはん選択 */
+.food-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* 体調リスト */
+.status-list {
+  margin: 0;
+  padding: 0;
+}
+.status-list__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  padding: 4px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.12);
+}
+.status-list__row:last-child {
+  border-bottom: none;
+}
+.status-list__row dt {
+  margin: 0;
+  color: rgba(255,255,255,0.72);
+}
+.status-list__row dd {
+  margin: 0;
+}
+
+/* ============ Responsive ============ */
+@media (min-width: 420px) {
+  .btn-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* HUDは縦積みにしない：ショップ/ごはんグリッドだけ縦にする */
+@media (max-width: 720px) {
+  .shop-grid,
+  .food-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>おさらかっぱ日和</title>
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- ======================
+      Screen A: Fishing
+    ======================= -->
+    <section id="screen-fishing" class="screen is-active" aria-label="釣り画面">
+      <div class="screen__bg" style="background-image:url('/assets/bg_fishing.webp')"></div>
+      <div class="screen__veil"></div>
+
+      <div class="card card--center">
+        <h1 class="title">おさらかっぱ日和</h1>
+        <p class="lead">
+          河童を釣って、育てよう。<br />
+          水をあげないと、ぐったり…そして…。
+        </p>
+
+        <div class="btn-row">
+          <button id="btn-fish" class="btn btn--primary" type="button">
+            釣る
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================
+      Screen B: Catch Result
+    ======================= -->
+    <section id="screen-catch" class="screen" aria-label="釣果確認画面">
+      <div class="screen__bg" style="background-image:url('/assets/bg_fishing.webp')"></div>
+      <div class="screen__veil"></div>
+
+      <div class="card card--center">
+        <h2 class="title title--sm">釣果確認</h2>
+
+        <div class="caught">
+          <img id="caught-kappa-img" class="caught__img" src="" alt="釣れた河童" />
+          <p id="caught-text" class="caught__text">…</p>
+          <p id="caught-meta" class="caught__meta">年齢：- / 寿命：-</p>
+        </div>
+
+        <div class="btn-row">
+          <button id="btn-adopt" class="btn btn--primary">連れて帰る</button>
+          <button id="btn-release" class="btn btn--ghost">リリース</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================
+      Screen C: Room
+    ======================= -->
+    <section id="screen-room" class="screen" aria-label="育成画面">
+      <div class="screen__bg" style="background-image:url('/assets/bg_room.webp')"></div>
+      <div class="screen__veil"></div>
+
+      <!-- ===== Header / HUD ===== -->
+      <header class="hud">
+        <!-- Left -->
+        <div class="hud__left">
+          <div class="hud__line">
+            <span class="hud__label">コイン</span>
+            <span id="coin-amount" class="hud__value">0</span>
+            <span class="hud__sep">｜</span>
+            <span id="hud-age" class="hud__value">--</span>
+          </div>
+
+          <!-- Water bar -->
+          <div id="bar-water-wrap" class="bar bar--water">
+            <span class="bar__label">水</span>
+            <div class="bar__track">
+              <div id="bar-water" class="bar__fill"></div>
+            </div>
+            <span id="water-percent" class="bar__pct">0%</span>
+          </div>
+
+          <!-- Hunger bar -->
+          <div id="bar-food-wrap" class="bar bar--food">
+            <span class="bar__label">おなか</span>
+            <div class="bar__track">
+              <div id="bar-food" class="bar__fill"></div>
+            </div>
+            <span id="food-percent" class="bar__pct">0%</span>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="hud__right">
+          <div class="hud__actions">
+            <button id="btn-shop" class="btn btn--ghost">ショップ</button>
+            <button id="btn-reward" class="btn btn--ghost">動画でコイン</button>
+            <button id="btn-rules" class="btn btn--ghost">ルール</button>
+            <!-- ★追加：体調を確認 -->
+            <button id="btn-status" class="btn btn--ghost">体調を確認</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- ===== Room ===== -->
+      <main class="room">
+        <section class="kappa" aria-label="河童表示">
+          <img id="kappa-img" class="kappa__img" src="/assets/kappa_boy.webp" alt="河童" draggable="false" />
+        </section>
+      </main>
+
+      <!-- ===== Footer actions ===== -->
+      <footer class="footer-actions">
+        <button id="btn-water" class="btn btn--primary">水をあげる</button>
+        <button id="btn-feed" class="btn btn--primary">ごはんをあげる</button>
+      </footer>
+    </section>
+
+    <!-- ======================
+      Modal: Shop
+    ======================= -->
+    <div id="modal-shop" class="modal is-hidden" role="dialog" aria-modal="true">
+      <div class="modal__backdrop" data-close="modal"></div>
+
+      <div class="modal__panel">
+        <header class="modal__header">
+          <h2 class="modal__title">ショップ</h2>
+          <button id="btn-close-shop" class="icon-btn" type="button">✕</button>
+        </header>
+
+        <div class="modal__body">
+          <section class="shop-section">
+            <h3 class="shop-section__title">高級ごはん</h3>
+
+            <div class="shop-grid">
+              <button class="btn btn--ghost buy-item" data-item="premiumCucumber" type="button">
+                高級きゅうり（緑）300コイン
+              </button>
+              <button class="btn btn--ghost buy-item" data-item="meat" type="button">
+                肉（赤）300コイン
+              </button>
+              <button class="btn btn--ghost buy-item" data-item="carp" type="button">
+                鯉（青）300コイン
+              </button>
+              <button class="btn btn--ghost buy-item" data-item="takuan" type="button">
+                たくあん（黄）300コイン
+              </button>
+            </div>
+
+            <button class="btn btn--primary" id="btn-buy-coins" type="button">
+              コインを購入
+            </button>
+          </section>
+          <div class="shop-section__divider"></div>
+
+          <!-- コイン購入（従来の購入UIへ飛べる） -->
+          <section class="shop-section" id="shop-coin-section">
+            <h3 class="shop-section__title">コイン購入（ダミー）</h3>
+            <p class="shop-section__desc">本物のIAPは後で（RevenueCat想定）。今はUIのみ。</p>
+
+            <div class="shop-grid" aria-label="コイン購入ボタン">
+              <button class="buy-coin btn btn--ghost" type="button" data-coins="100" data-price="300">
+                100コイン / 300円
+              </button>
+              <button class="buy-coin btn btn--ghost" type="button" data-coins="200" data-price="500">
+                200コイン / 500円
+              </button>
+              <button class="buy-coin btn btn--ghost" type="button" data-coins="500" data-price="600">
+                500コイン / 600円
+              </button>
+              <button class="buy-coin btn btn--ghost" type="button" data-coins="1000" data-price="1000">
+                1000コイン / 1000円
+              </button>
+            </div>
+          </section>
+
+          <section class="shop-section">
+            <h3 class="shop-section__title">動画視聴（ダミー）</h3>
+            <p class="shop-section__desc">動画で100コイン（上限あり想定）。</p>
+            <button id="btn-watch-ad" class="btn btn--primary" type="button">
+              動画を見る（+100コイン）
+            </button>
+          </section>
+        </div>
+      </div>
+
+      <footer class="modal__footer">
+        <button class="btn btn--ghost" data-close="modal" type="button">閉じる</button>
+      </footer>
+    </div>
+
+    <!-- ======================
+      Modal: Food Select
+    ======================= -->
+    <div id="modal-food" class="modal is-hidden" role="dialog" aria-modal="true">
+      <div class="modal__backdrop" data-close="modal"></div>
+
+      <div class="modal__panel">
+        <header class="modal__header">
+          <h2 class="modal__title">ごはんを選ぶ</h2>
+          <button id="btn-close-food" class="icon-btn" type="button">✕</button>
+        </header>
+
+        <div class="modal__body">
+          <div class="food-grid">
+            <button class="btn btn--ghost food-item" data-food="cucumber" type="button">
+              きゅうり（残り：<span id="food-cucumber-count">0</span>）
+            </button>
+            <button class="btn btn--ghost food-item" data-food="premiumCucumber" type="button">
+              高級きゅうり（残り：<span id="food-premium-cucumber-count">0</span>）
+            </button>
+            <button class="btn btn--ghost food-item" data-food="meat" type="button">
+              肉（残り：<span id="food-meat-count">0</span>）
+            </button>
+            <button class="btn btn--ghost food-item" data-food="koi" type="button">
+              鯉（残り：<span id="food-koi-count">0</span>）
+            </button>
+            <button class="btn btn--ghost food-item" data-food="takuan" type="button">
+              たくあん（残り：<span id="food-takuan-count">0</span>）
+            </button>
+          </div>
+        </div>
+
+        <footer class="modal__footer">
+          <button class="btn btn--ghost" data-close="modal" type="button">閉じる</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ======================
+      Modal: Rules
+    ======================= -->
+    <div id="modal-rules" class="modal is-hidden" role="dialog" aria-modal="true">
+      <div class="modal__backdrop" data-close="modal"></div>
+
+      <div class="modal__panel">
+        <header class="modal__header">
+          <h2 class="modal__title">ルール</h2>
+          <button class="icon-btn" data-close="modal" type="button">✕</button>
+        </header>
+
+        <div class="modal__body">
+          <p>・水は24時間で0%になります。与えないと弱ってしまい死に至る場合もあります。</p>
+          <p>・お腹は6時間で0%になります。70%までお腹が空かないとごはんは与えられません。空腹でもすぐには死にません。</p>
+          <p>・ごはんには種類があり、ショップで購入できます。与えるご飯の種類によって河童の色も変化します。（未実装）</p>
+          <p>・コインは動画視聴やショップで増やせます。</p>
+        </div>
+
+        <footer class="modal__footer">
+          <button class="btn btn--ghost" data-close="modal" type="button">閉じる</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ======================
+      Modal: Status（体調を確認）
+      ※項目は画像に合わせる（デザインはCSSで後で整える）
+    ======================= -->
+    <div id="modal-status" class="modal is-hidden" role="dialog" aria-modal="true">
+      <div class="modal__backdrop" data-close="modal"></div>
+
+      <div class="modal__panel">
+        <header class="modal__header">
+          <h2 class="modal__title">体調を確認</h2>
+          <button class="icon-btn" data-close="modal" type="button">✕</button>
+        </header>
+
+        <div class="modal__body">
+          <dl class="status-list" aria-label="体調一覧">
+            <div class="status-list__row">
+              <dt>年齢</dt>
+              <dd id="status-age">--</dd>
+            </div>
+            <div class="status-list__row">
+              <dt>成長段階</dt>
+              <dd id="status-stage">--</dd>
+            </div>
+            <div class="status-list__row">
+              <dt>状態</dt>
+              <dd id="status-condition">--</dd>
+            </div>
+            <div class="status-list__row">
+              <dt>発熱</dt>
+              <dd id="status-fever">--</dd>
+            </div>
+            <div class="status-list__row">
+              <dt>最終水やり</dt>
+              <dd id="status-last-water">--</dd>
+            </div>
+            <div class="status-list__row">
+              <dt>最終ごはん</dt>
+              <dd id="status-last-food">--</dd>
+            </div>
+          </dl>
+        </div>
+
+        <footer class="modal__footer">
+          <button class="btn btn--ghost" data-close="modal" type="button">閉じる</button>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
+
