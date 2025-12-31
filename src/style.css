@@ -73,7 +73,7 @@ body {
 
 @media (max-width: 480px) {
   .screen__bg {
-    transform: scale(0.92);
+    transform: scale(1);
     transform-origin: center;
   }
 
